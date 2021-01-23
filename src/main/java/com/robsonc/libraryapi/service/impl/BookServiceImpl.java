@@ -6,6 +6,8 @@ import com.robsonc.libraryapi.model.repository.BookRepository;
 import com.robsonc.libraryapi.service.BookService;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class BookServiceImpl implements BookService {
     private BookRepository repository;
@@ -21,5 +23,11 @@ public class BookServiceImpl implements BookService {
 
         }
         return repository.save(book);
+    }
+
+    @Override
+    public Optional<Book> getById(Long id) {
+       // repository.getById(id);
+        return Optional.empty();
     }
 }

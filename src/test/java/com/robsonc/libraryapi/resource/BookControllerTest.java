@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,7 +48,7 @@ public class BookControllerTest {
     public void createBookTeste() throws Exception {
         BookDTO bookDTO = createNewBook();
 
-        BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(Book.builder().author("Arthur Conan Doile").title("Um estudo em vermelho").isbn("55555555500").id(200L).build());
+        BDDMockito.given(service.save(Mockito.any(Book.class))).willReturn(Book.builder().author("Arthur Conan Doile").title("Um estudo em vermelho").isbn("002").id(200L).build());
         String json = new ObjectMapper().writeValueAsString(bookDTO);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
@@ -57,7 +59,7 @@ public class BookControllerTest {
 
         mvc.perform(request)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").isNotEmpty())
+                .andExpect(jsonPath("id").value(200l))
                 .andExpect(jsonPath("title").value(bookDTO.getTitle()))
                 .andExpect(jsonPath("author").value(bookDTO.getAuthor()))
                 .andExpect(jsonPath("isbn").value(bookDTO.getIsbn()));
@@ -89,7 +91,7 @@ public class BookControllerTest {
         BookDTO dto = createNewBook();
         String json = new ObjectMapper().writeValueAsString(dto);
 
-        String messageError = "Isbn ja cadastrado.";
+        String messageError = "Isbn cadastrado.";
         BDDMockito.given(service.save(Mockito.any(Book.class)))
                 .willThrow(new BusinessException(messageError));
 
@@ -100,15 +102,52 @@ public class BookControllerTest {
                 .content(json);
 
         mvc.perform(request)
-                .andExpect(status().isCreated());
-                //.andExpect(status().isBadRequest());
-                //.andExpect(jsonPath("errors", hasSize(1)))
-                //.andExpect(jsonPath("errors[0]").value(messageError));
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("errors", hasSize(1)))
+                .andExpect(jsonPath("errors[0]").value(messageError));
+    }
+
+
+    @Test
+    @DisplayName("Deve retornar detalhes de um livro persistido")
+    public void getBookDetailsTest() throws Exception{
+        Long id = 1L;
+
+        Book book = Book.builder()
+                .author(createNewBook().getAuthor())
+                .title(createNewBook().getTitle())
+                .isbn(createNewBook().getIsbn())
+                .id(id)
+                .build();
+
+        BDDMockito.given(service.getById(id)).willReturn(Optional.of(book));
+
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(BOOK_API.concat("/" + id))
+                .accept(MediaType.APPLICATION_JSON);
+
+        mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").value(id))
+                .andExpect(jsonPath("title").value(createNewBook().getTitle()))
+                .andExpect(jsonPath("author").value(createNewBook().getAuthor()))
+                .andExpect(jsonPath("isbn").value(createNewBook().getIsbn()));
+    }
+
+    @Test
+    @DisplayName("Deve retornar resource not found quando o livro procurado não existir")
+    public void bookNotFoundTest() throws Exception{
+        BDDMockito.given(service.getById(Mockito.anyLong())).willReturn(Optional.empty());
+        MockHttpServletRequestBuilder request = MockMvcRequestBuilders
+                .get(BOOK_API.concat("/" + 1L))
+                .accept(MediaType.APPLICATION_JSON);
+        mvc.perform(request)
+                .andExpect(status().isNotFound());
     }
 
 
     private BookDTO createNewBook() {
-        return BookDTO.builder().author("Arthur Conan Doile").title("Um estudo em vermelho").isbn("002").id(200l).build();
+        return BookDTO.builder().author("Arthur Conan Doile").title("Um estudo em vermelho").isbn("002").build();
     }
 
 
