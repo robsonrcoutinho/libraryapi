@@ -1,7 +1,7 @@
 package com.robsonc.libraryapi.service;
 
 
-import com.robsonc.libraryapi.entity.Book;
+import com.robsonc.libraryapi.model.entity.Book;
 import com.robsonc.libraryapi.exceptions.BusinessException;
 import com.robsonc.libraryapi.model.repository.BookRepository;
 import com.robsonc.libraryapi.service.impl.BookServiceImpl;

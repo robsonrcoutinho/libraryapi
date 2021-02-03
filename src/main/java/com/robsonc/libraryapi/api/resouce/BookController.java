@@ -2,7 +2,7 @@ package com.robsonc.libraryapi.api.resouce;
 
 import com.robsonc.libraryapi.api.dto.BookDTO;
 import com.robsonc.libraryapi.api.exceptions.ApiErrors;
-import com.robsonc.libraryapi.entity.Book;
+import com.robsonc.libraryapi.model.entity.Book;
 import com.robsonc.libraryapi.exceptions.BusinessException;
 import com.robsonc.libraryapi.service.BookService;
 import org.modelmapper.ModelMapper;
@@ -92,18 +92,7 @@ public class BookController {
     }
 
 
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleValidationExceptions(MethodArgumentNotValidException ex) {
-        BindingResult bindingResult = ex.getBindingResult();
-        return new ApiErrors(bindingResult);
-    }
 
-    @ExceptionHandler(BusinessException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiErrors handleBusinessException(BusinessException ex) {
-        return new ApiErrors(ex);
-    }
 
 
 }

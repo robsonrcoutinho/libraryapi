@@ -1,4 +1,4 @@
-package com.robsonc.libraryapi.entity;
+package com.robsonc.libraryapi.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

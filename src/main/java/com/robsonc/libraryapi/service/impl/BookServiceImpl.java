@@ -1,6 +1,6 @@
 package com.robsonc.libraryapi.service.impl;
 
-import com.robsonc.libraryapi.entity.Book;
+import com.robsonc.libraryapi.model.entity.Book;
 import com.robsonc.libraryapi.exceptions.BusinessException;
 import com.robsonc.libraryapi.model.repository.BookRepository;
 import com.robsonc.libraryapi.service.BookService;
@@ -61,5 +61,10 @@ public class BookServiceImpl implements BookService {
                 .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)
         );
         return repository.findAll(example, pageRequest);
+    }
+
+    @Override
+    public Optional<Book> getBookByIsbn(String isbn) {
+        return Optional.empty();
     }
 }

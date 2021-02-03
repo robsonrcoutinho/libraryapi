@@ -2,8 +2,9 @@ package com.robsonc.libraryapi.resource;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.robsonc.libraryapi.api.dto.BookDTO;
+import com.robsonc.libraryapi.api.resouce.BookController;
 import com.robsonc.libraryapi.exceptions.BusinessException;
-import com.robsonc.libraryapi.entity.Book;
+import com.robsonc.libraryapi.model.entity.Book;
 import com.robsonc.libraryapi.service.BookService;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
@@ -35,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")
-@WebMvcTest
+@WebMvcTest(controllers = BookController.class)
 @AutoConfigureMockMvc
 public class BookControllerTest {
     static String BOOK_API = "/api/books";
