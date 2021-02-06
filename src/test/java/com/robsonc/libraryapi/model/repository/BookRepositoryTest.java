@@ -39,7 +39,7 @@ public class BookRepositoryTest {
 
     }
 
-    private Book createNewBook(String isbn) {
+    public static Book createNewBook(String isbn) {
         return Book.builder().author("Arthur Conan Doile").title("Um estudo em vermelho").isbn(isbn).build();
     }
 
