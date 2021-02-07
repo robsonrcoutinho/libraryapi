@@ -1,8 +1,9 @@
 package com.robsonc.libraryapi.service;
 
+import com.robsonc.libraryapi.api.dto.LoanFilterDTO;
 import com.robsonc.libraryapi.model.entity.Loan;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import java.util.Optional;
 
 /*
@@ -14,5 +15,7 @@ public interface LoanService {
 
     Optional<Loan> getById(Long id);
 
-    void update(Loan loan);
+    Loan update(Loan loan);
+
+    Page<Loan> find(LoanFilterDTO filter, Pageable pageRequest);
 }

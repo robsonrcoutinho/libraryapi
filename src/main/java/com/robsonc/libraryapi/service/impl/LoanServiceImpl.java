@@ -1,9 +1,12 @@
 package com.robsonc.libraryapi.service.impl;
 
+import com.robsonc.libraryapi.api.dto.LoanFilterDTO;
 import com.robsonc.libraryapi.exceptions.BusinessException;
 import com.robsonc.libraryapi.model.entity.Loan;
 import com.robsonc.libraryapi.model.repository.LoanRepository;
 import com.robsonc.libraryapi.service.LoanService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
@@ -33,7 +36,12 @@ public class LoanServiceImpl implements LoanService {
     }
 
     @Override
-    public void update(Loan loan) {
-        repository.save(loan);
+    public Loan update(Loan loan) {
+        return repository.save(loan);
+    }
+
+    @Override
+    public Page<Loan> find(LoanFilterDTO filter, Pageable pageRequest) {
+        return repository.findByBookIsbnOrCustomer(filter.getIsbn(), filter.getCustomer(), pageRequest);
     }
 }

@@ -2,9 +2,8 @@ package com.robsonc.libraryapi.api.dto;
 
 /*
 @Author Robson Coutinho 
-Created on 31/01/2021 
+Created on 06/02/2021 
 */
-
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,12 +12,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class LoanDTO {
-
-    private Long id;
+@Builder
+public class LoanFilterDTO {
     private String isbn;
     private String customer;
-    private BookDTO book;
 }
