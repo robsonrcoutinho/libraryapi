@@ -27,9 +27,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +51,7 @@ public class LoanServiceTest {
     @DisplayName("Deve salvar um emprestimo")
     public void saveLoanTest() {
         String customer = "fulano";
-        Book book = Book.builder().id(1l).build();
+        Book book = Book.builder().id(1L).build();
         Loan savingLoan = Loan.builder()
                 .book(book)
                 .customer(customer)
@@ -61,7 +60,7 @@ public class LoanServiceTest {
 
 
         Loan loanSaved = Loan.builder()
-                .id(1l)
+                .id(1L)
                 .book(book)
                 .customer(customer)
                 .loanDate(LocalDate.now())
@@ -86,7 +85,7 @@ public class LoanServiceTest {
     @DisplayName("Deve lancar erro de negocio ao salvar um livro já emprestado")
     public void loanedBookSaveTest() {
         String customer = "fulano";
-        Book book = Book.builder().id(1l).build();
+        Book book = Book.builder().id(1L).build();
         Loan savingLoan = Loan.builder()
                 .book(book)
                 .customer(customer)
@@ -109,7 +108,7 @@ public class LoanServiceTest {
     @DisplayName("Deve obter as informações de emprestimo pelo id")
     public void getLoanDetailsTest() {
         //Cenario
-        Long id = 1l;
+        Long id = 1L;
         Loan loan = createLoan();
         loan.setId(id);
         when(repository.findById(id)).thenReturn(Optional.of(loan));
@@ -131,7 +130,7 @@ public class LoanServiceTest {
     @Test
     @DisplayName("Deve atualizar um emprestimo")
     public void updateLoanTest() {
-        Long id = 1l;
+        Long id = 1L;
         Loan loan = Loan.builder().id(id).build();
         loan.setReturned(true);
         loan.setId(id);
@@ -153,11 +152,11 @@ public class LoanServiceTest {
         LoanFilterDTO loanFilterDTO = LoanFilterDTO.builder().customer("fulando").isbn("321").build();
 
         Loan loan = createLoan();
-        loan.setId(1l);
+        loan.setId(1L);
 
         PageRequest pageRequest = PageRequest.of(0, 10);
-        List<Loan> list = Arrays.asList(loan);
-        Page<Loan> page = new PageImpl<Loan>(list, pageRequest, list.size());
+        List<Loan> list = Collections.singletonList(loan);
+        Page<Loan> page = new PageImpl<>(list, pageRequest, list.size());
 
         when(repository.findByBookIsbnOrCustomer(Mockito.anyString(), Mockito.anyString(),
                 Mockito.any(PageRequest.class)))
@@ -168,7 +167,7 @@ public class LoanServiceTest {
 
         Page<Loan> result = service.find(loanFilterDTO, pageRequest);
         assertThat(result.getTotalElements()).isEqualTo(1);
-        assertThat(result.getContent()).isEqualTo(Arrays.asList(loan));
+        assertThat(result.getContent()).isEqualTo(list);
         assertThat(result.getPageable().getPageNumber()).isEqualTo(0);
         assertThat(result.getPageable().getPageSize()).isEqualTo(10);
 
@@ -177,7 +176,7 @@ public class LoanServiceTest {
 
     public static Loan createLoan() {
         String customer = "fulano";
-        Book book = Book.builder().id(1l).build();
+        Book book = Book.builder().id(1L).build();
         return Loan.builder()
                 .book(book)
                 .customer(customer)
