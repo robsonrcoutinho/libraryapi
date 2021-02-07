@@ -32,15 +32,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/loans")
 @RequiredArgsConstructor
 public class LoanController {
-    private ModelMapper modelMapper;
-    private LoanService service;
-    private BookService bookService;
-
-
-    public LoanController( ModelMapper modelMapper){
-        this.modelMapper = modelMapper;
-
-    }
+    private final ModelMapper modelMapper;
+    private final LoanService service;
+    private final BookService bookService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
