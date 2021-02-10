@@ -46,6 +46,7 @@ public class LoanController {
                 .book(book)
                 .customer(dto.getCustomer())
                 .loanDate(LocalDate.now())
+                //.email(dto.getEmail())
                 .build();
         entity = service.save(entity);
         return entity.getId();

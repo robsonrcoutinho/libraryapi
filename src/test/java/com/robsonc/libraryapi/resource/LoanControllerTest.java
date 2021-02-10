@@ -16,7 +16,6 @@ import com.robsonc.libraryapi.model.entity.Loan;
 import com.robsonc.libraryapi.service.BookService;
 import com.robsonc.libraryapi.service.LoanService;
 import com.robsonc.libraryapi.service.LoanServiceTest;
-import org.assertj.core.api.Assertions;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -63,7 +62,7 @@ public class LoanControllerTest {
     @Test
     @DisplayName("Deve realizar um emprestimo")
     public void createLoanTest() throws Exception {
-        LoanDTO dto = LoanDTO.builder().isbn("123").customer("fulano").build();
+        LoanDTO dto = LoanDTO.builder().email("customer_email@email.com").isbn("123").customer("fulano").build();
         String json = new ObjectMapper().writeValueAsString(dto);
 
         Book book = Book
